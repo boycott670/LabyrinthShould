@@ -5,6 +5,11 @@ public final class Passage
   private final Gate gateToNextRoom;
   private final Room nextRoom;
   
+  public Passage(Room nextRoom)
+  {
+    this(null, nextRoom);
+  }
+
   public Passage(Gate gateToNextRoom, Room nextRoom)
   {
     this.gateToNextRoom = gateToNextRoom;

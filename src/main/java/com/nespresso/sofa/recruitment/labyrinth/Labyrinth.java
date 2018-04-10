@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
+import com.nespresso.sofa.recruitment.labyrinth.entities.Passage;
 import com.nespresso.sofa.recruitment.labyrinth.entities.Room;
 import com.nespresso.sofa.recruitment.labyrinth.parsers.DefaultLabyrinthSlotsParser;
 import com.nespresso.sofa.recruitment.labyrinth.parsers.LabyrinthSlotsParser;
@@ -15,7 +16,7 @@ public final class Labyrinth
   
   private final Map<? super Character, ? extends Room> rooms;
   
-  private Room currentRoom;
+  private Passage currentPassage;
   
   public Labyrinth (final String... labyrinthSlots)
   {
@@ -36,11 +37,11 @@ public final class Labyrinth
   
   public void popIn (final String room)
   {
-    currentRoom = sanitizeUserRoomInput(room);
+    currentPassage = sanitizeUserRoomInput(room).popIn();
   }
   
   public void walkTo (final String room)
   {
-    currentRoom = currentRoom.walkTo(sanitizeUserRoomInput(room));
+    currentPassage = currentPassage.getNextRoom().walkTo(sanitizeUserRoomInput(room));
   }
 }

@@ -22,13 +22,17 @@ public final class Room
     return label;
   }
 
-  public Room walkTo (final Room targetRoom)
+  public Passage popIn ()
+  {
+    return new Passage(this);
+  }
+  
+  public Passage walkTo (final Room targetRoom)
   {
     return Arrays.asList(nextPassages, previousPassages)
       .stream()
       .flatMap(Collection::stream)
-      .map(Passage::getNextRoom)
-      .filter(targetRoom::equals)
+      .filter(passage -> passage.getNextRoom().equals(targetRoom))
       .findFirst()
       .orElseThrow(IllegalMoveException::new);
   }
