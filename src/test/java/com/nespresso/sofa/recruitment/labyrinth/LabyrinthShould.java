@@ -1,5 +1,7 @@
 package com.nespresso.sofa.recruitment.labyrinth;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.junit.Test;
 
 public class LabyrinthShould
@@ -99,5 +101,43 @@ public class LabyrinthShould
     labyrinth.walkTo("D");
     labyrinth.walkTo("F");
     labyrinth.walkTo("G");
+  }
+
+  @Test(expected = ClosedDoorException.class)
+  public void not_Allow_Turn_Back_Through_Closed_Door()
+  {
+    Labyrinth labyrinth = new Labyrinth("A$B", "A$C", "C|E", "B$D", "B|E", "E$F", "D$F", "F|G");
+    labyrinth.popIn("A");
+    labyrinth.walkTo("B");
+    labyrinth.walkTo("D");
+    labyrinth.closeLastDoor();
+    labyrinth.walkTo("B");
+  }
+
+  @Test
+  public void follow_Walker()
+  {
+    Labyrinth labyrinth = new Labyrinth("A$B", "A$C", "B$D", "D$E", "D$F", "F$H", "D$F");
+    labyrinth.popIn("A");
+    labyrinth.walkTo("B");
+    assertThat(labyrinth.readSensors()).isEqualTo("AB");
+    labyrinth.walkTo("D");
+    assertThat(labyrinth.readSensors()).isEqualTo("AB;BD");
+    labyrinth.walkTo("F");
+    assertThat(labyrinth.readSensors()).isEqualTo("AB;BD;DF");
+  }
+
+  @Test
+  public void follow_Walker_Through_Unmonitored_Path()
+  {
+    Labyrinth labyrinth = new Labyrinth("A$B", "A$C", "C|E", "B$D", "B|E", "E$F", "D$F", "F|G");
+    labyrinth.popIn("A");
+    labyrinth.walkTo("B");
+    assertThat(labyrinth.readSensors()).isEqualTo("AB");
+    labyrinth.walkTo("E");
+    labyrinth.walkTo("F");
+    assertThat(labyrinth.readSensors()).isEqualTo("AB;EF");
+    labyrinth.walkTo("G");
+    assertThat(labyrinth.readSensors()).isEqualTo("AB;EF");
   }
 }

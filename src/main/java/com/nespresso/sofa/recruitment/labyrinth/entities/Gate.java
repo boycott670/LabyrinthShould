@@ -20,4 +20,9 @@ public class Gate
   {
     return closed;
   }
+  
+  public String read (final Passage passage1, final Passage passage2)
+  {
+    return null;
+  }
 }

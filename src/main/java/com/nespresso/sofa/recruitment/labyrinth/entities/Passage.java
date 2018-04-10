@@ -37,4 +37,9 @@ public final class Passage
     
     return this;
   }
+  
+  public String readPassage (final Passage previousPassage)
+  {
+    return getGateToNextRoom().read(previousPassage, this);
+  }
 }
