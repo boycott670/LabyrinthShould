@@ -44,4 +44,9 @@ public final class Labyrinth
   {
     currentPassage = currentPassage.getNextRoom().walkTo(sanitizeUserRoomInput(room));
   }
+  
+  public void closeLastDoor ()
+  {
+    currentPassage.getGateToNextRoom().close();
+  }
 }

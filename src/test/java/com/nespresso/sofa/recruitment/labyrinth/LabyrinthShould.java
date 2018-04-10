@@ -58,4 +58,46 @@ public class LabyrinthShould
     labyrinth.walkTo("B");
     labyrinth.walkTo("D");
   }
+
+  @Test
+  public void allow_Walker_To_Close_Passed_Door()
+  {
+    Labyrinth labyrinth = new Labyrinth("A$B", "A$C", "C|E", "B$D", "B|E", "E$F", "D$F", "F|G");
+    labyrinth.popIn("A");
+    labyrinth.walkTo("B");
+    labyrinth.walkTo("D");
+    labyrinth.walkTo("F");
+    labyrinth.closeLastDoor();
+    labyrinth.walkTo("G");
+  }
+
+  @Test(expected = DoorAlreadyClosedException.class)
+  public void allow_Walker_To_Close_Only_Last_Door()
+  {
+    Labyrinth labyrinth = new Labyrinth("A$B", "A$C", "C|E", "B$D", "B|E", "E$F", "D$F", "F|G");
+    labyrinth.popIn("A");
+    labyrinth.walkTo("B");
+    labyrinth.walkTo("D");
+    labyrinth.walkTo("F");
+    labyrinth.closeLastDoor();
+    labyrinth.closeLastDoor();
+    labyrinth.walkTo("G");
+  }
+
+  @Test(expected = ClosedDoorException.class)
+  public void not_Allow_Closed_Door_Crossing()
+  {
+
+    Labyrinth labyrinth = new Labyrinth("A$B", "A$C", "C|E", "B$D", "B|E", "E$F", "D$F", "F|G");
+    labyrinth.popIn("A");
+    labyrinth.walkTo("B");
+    labyrinth.walkTo("D");
+    labyrinth.closeLastDoor();
+    labyrinth.walkTo("F");
+    labyrinth.walkTo("E");
+    labyrinth.walkTo("B");
+    labyrinth.walkTo("D");
+    labyrinth.walkTo("F");
+    labyrinth.walkTo("G");
+  }
 }

@@ -34,7 +34,8 @@ public final class Room
       .flatMap(Collection::stream)
       .filter(passage -> passage.getNextRoom().equals(targetRoom))
       .findFirst()
-      .orElseThrow(IllegalMoveException::new);
+      .orElseThrow(IllegalMoveException::new)
+      .checkGate();
   }
 
   public void addNextPassage (final Passage nextPassage)

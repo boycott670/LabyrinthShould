@@ -1,5 +1,7 @@
 package com.nespresso.sofa.recruitment.labyrinth.entities;
 
+import com.nespresso.sofa.recruitment.labyrinth.ClosedDoorException;
+
 public final class Passage
 {
   private final Gate gateToNextRoom;
@@ -24,5 +26,15 @@ public final class Passage
   public Room getNextRoom()
   {
     return nextRoom;
+  }
+  
+  public Passage checkGate ()
+  {
+    if (gateToNextRoom.isClosed())
+    {
+      throw new ClosedDoorException();
+    }
+    
+    return this;
   }
 }
