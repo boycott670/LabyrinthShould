@@ -1,9 +1,14 @@
 package com.nespresso.sofa.recruitment.labyrinth;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import com.nespresso.sofa.recruitment.labyrinth.entities.Passage;
 import com.nespresso.sofa.recruitment.labyrinth.entities.Room;
@@ -17,6 +22,8 @@ public final class Labyrinth
   private final Map<? super Character, ? extends Room> rooms;
   
   private Passage currentPassage;
+  
+  private final List<Passage> tracedPassages = new ArrayList<>();
   
   public Labyrinth (final String... labyrinthSlots)
   {
@@ -38,15 +45,25 @@ public final class Labyrinth
   public void popIn (final String room)
   {
     currentPassage = sanitizeUserRoomInput(room).popIn();
+    tracedPassages.add(currentPassage);
   }
   
   public void walkTo (final String room)
   {
     currentPassage = currentPassage.getNextRoom().walkTo(sanitizeUserRoomInput(room));
+    tracedPassages.add(currentPassage);
   }
   
   public void closeLastDoor ()
   {
     currentPassage.getGateToNextRoom().close();
+  }
+  
+  public String readSensors ()
+  {
+    return IntStream.range(1, tracedPassages.size())
+      .mapToObj(index -> tracedPassages.get(index).readPassage(tracedPassages.get(index - 1)))
+      .filter(Objects::nonNull)
+      .collect(Collectors.joining(";"));
   }
 }
