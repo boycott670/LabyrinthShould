@@ -3,6 +3,9 @@ package com.sqli.maze;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
+import java.util.Optional;
+
+import com.sqli.maze.exceptions.ClosedDoorException;
 
 public final class Room
 {
@@ -27,10 +30,21 @@ public final class Room
   
   boolean walkTo(final Room to)
   {
-    return adjacentDoors.stream()
+    final Optional<Door> targetAdjacentDoor = adjacentDoors.stream()
         .filter(door -> door.walkTo(this, to))
-        .findFirst()
-        .isPresent();
+        .findFirst();
+    
+    if (targetAdjacentDoor.isPresent())
+    {
+      if (targetAdjacentDoor.get().isClosed())
+      {
+        throw new ClosedDoorException();
+      }
+      
+      return true;
+    }
+    
+    return false;
   }
   
   void closeLastDoor(final Room to)

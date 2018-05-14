@@ -37,4 +37,9 @@ public final class Door
       isClosed = true;
     }
   }
+  
+  boolean isClosed()
+  {
+    return isClosed;
+  }
 }
