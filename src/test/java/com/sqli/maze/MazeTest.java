@@ -120,4 +120,16 @@ public class MazeTest
     mz.walkTo("G");
   }
 
+  @Test(expected = ClosedDoorException.class)
+  public void not_Allow_Turn_Back_Through_Closed_Door()
+  {
+    Maze mz = new Maze("A$B", "A$C", "C|E", "B$D", "B|E", "E$F", "D$F", "F|G");
+    mz.popIn("A");
+    mz.walkTo("B");
+    mz.walkTo("D");
+    assertEquals("D", mz.at());
+    mz.closeLastDoor();
+    mz.walkTo("B");
+  }
+
 }
