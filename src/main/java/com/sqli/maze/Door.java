@@ -3,6 +3,8 @@ package com.sqli.maze;
 import java.util.Arrays;
 import java.util.Objects;
 
+import com.sqli.maze.exceptions.DoorAlreadyClosedException;
+
 public final class Door
 {
   private final Room leftAdjacentRoom;
@@ -27,6 +29,11 @@ public final class Door
   {
     if (Arrays.asList(leftAdjacentRoom, rightAdjacentRoom).containsAll(Arrays.asList(from, to)))
     {
+      if (isClosed)
+      {
+        throw new DoorAlreadyClosedException();
+      }
+      
       isClosed = true;
     }
   }

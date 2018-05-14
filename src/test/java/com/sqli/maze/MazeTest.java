@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import com.sqli.maze.exceptions.DoorAlreadyClosedException;
 import com.sqli.maze.exceptions.IllegalMoveException;
 
 public class MazeTest
@@ -80,6 +81,21 @@ public class MazeTest
     mz.walkTo("D");
     mz.walkTo("F");
     assertEquals("F", mz.at());
+    mz.closeLastDoor();
+    mz.walkTo("G");
+    assertEquals("G", mz.at());
+  }
+
+  @Test(expected = DoorAlreadyClosedException.class)
+  public void allow_Walker_To_Close_Only_Last_Door()
+  {
+    Maze mz = new Maze("A$B", "A$C", "C|E", "B$D", "B|E", "E$F", "D$F", "F|G");
+    mz.popIn("A");
+    mz.walkTo("B");
+    mz.walkTo("D");
+    mz.walkTo("F");
+    assertEquals("F", mz.at());
+    mz.closeLastDoor();
     mz.closeLastDoor();
     mz.walkTo("G");
     assertEquals("G", mz.at());
