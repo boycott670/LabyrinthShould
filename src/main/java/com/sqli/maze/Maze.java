@@ -8,6 +8,8 @@ import java.util.stream.Collectors;
 import com.sqli.maze.exceptions.IllegalMoveException;
 import com.sqli.maze.parsers.DefaultMazeParser;
 import com.sqli.maze.parsers.MazeParser;
+import com.sqli.maze.visitors.rooms.RoomsVisitor;
+import com.sqli.maze.visitors.rooms.SensorDoorRoomsVisitor;
 
 final class Maze
 {
@@ -17,6 +19,8 @@ final class Maze
   private Room currentRoom;
   private Room previousRoom;
   
+  private final RoomsVisitor roomsVisitor;
+  
   Maze(final String... maze)
   {
     parser = new DefaultMazeParser();
@@ -24,11 +28,15 @@ final class Maze
     rooms = parser.parseDoors(parser.parseRooms(maze), maze)
         .stream()
         .collect(Collectors.toMap(Room::getLabel, Function.identity()));
+    
+    roomsVisitor = new SensorDoorRoomsVisitor();
   }
   
   void popIn(final String room)
   {
     currentRoom = rooms.get(room);
+    
+    roomsVisitor.startIn(currentRoom);
   }
   
   String at()
@@ -43,10 +51,17 @@ final class Maze
     currentRoom = Optional.ofNullable(rooms.get(to))
         .filter(currentRoom::walkTo)
         .orElseThrow(IllegalMoveException::new);
+    
+    roomsVisitor.walkTo(currentRoom);
   }
   
   void closeLastDoor()
   {
     currentRoom.closeLastDoor(previousRoom);
+  }
+  
+  String readSensors()
+  {
+    return roomsVisitor.readPath();
   }
 }

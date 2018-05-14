@@ -1,5 +1,6 @@
 package com.sqli.maze;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
@@ -130,6 +131,19 @@ public class MazeTest
     assertEquals("D", mz.at());
     mz.closeLastDoor();
     mz.walkTo("B");
+  }
+
+  @Test
+  public void follow_Walker()
+  {
+    Maze mz = new Maze("A$B", "A$C", "B$D", "D$E", "D$F", "F$H", "D$F");
+    mz.popIn("A");
+    mz.walkTo("B");
+    assertThat(mz.readSensors()).isEqualTo("AB");
+    mz.walkTo("D");
+    assertThat(mz.readSensors()).isEqualTo("AB;BD");
+    mz.walkTo("F");
+    assertThat(mz.readSensors()).isEqualTo("AB;BD;DF");
   }
 
 }
