@@ -42,4 +42,9 @@ public final class Door
   {
     return isClosed;
   }
+  
+  public boolean isSensor()
+  {
+    return isSensor;
+  }
 }

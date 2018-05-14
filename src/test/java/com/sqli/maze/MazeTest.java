@@ -146,4 +146,21 @@ public class MazeTest
     assertThat(mz.readSensors()).isEqualTo("AB;BD;DF");
   }
 
+  @Test
+  public void follow_Walker_Through_Unmonitored_Path()
+  {
+    Maze mz = new Maze("A$B", "A$C", "C|E", "B$D", "B|E", "E$F", "D$F", "F|G");
+    mz.popIn("A");
+    mz.walkTo("B");
+    assertThat(mz.readSensors()).isEqualTo("AB");
+    mz.walkTo("E");
+    mz.walkTo("F");
+    assertThat(mz.readSensors()).isEqualTo("AB;EF");
+    mz.walkTo("G");
+    assertThat(mz.readSensors()).isEqualTo("AB;EF");
+    mz.walkTo("F");
+    mz.walkTo("E");
+    assertThat(mz.readSensors()).isEqualTo("AB;EF;FE");
+  }
+
 }

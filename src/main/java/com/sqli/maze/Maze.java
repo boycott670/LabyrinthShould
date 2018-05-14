@@ -49,10 +49,8 @@ final class Maze
     previousRoom = currentRoom;
     
     currentRoom = Optional.ofNullable(rooms.get(to))
-        .filter(currentRoom::walkTo)
+        .filter(room -> currentRoom.walkTo(room, roomsVisitor))
         .orElseThrow(IllegalMoveException::new);
-    
-    roomsVisitor.walkTo(currentRoom);
   }
   
   void closeLastDoor()

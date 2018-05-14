@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
+import com.sqli.maze.Door;
 import com.sqli.maze.Room;
 
 public final class SensorDoorRoomsVisitor implements RoomsVisitor
@@ -51,9 +52,12 @@ public final class SensorDoorRoomsVisitor implements RoomsVisitor
   }
 
   @Override
-  public void walkTo(Room room)
+  public void walkTo(final Door door, Room room)
   {
-    path.add(new PathEntry(previousRoom, room));
+    if (door.isSensor())
+    {
+      path.add(new PathEntry(previousRoom, room));
+    }
     
     previousRoom = room;
   }

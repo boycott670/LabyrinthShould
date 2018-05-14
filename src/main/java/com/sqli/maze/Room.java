@@ -6,6 +6,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import com.sqli.maze.exceptions.ClosedDoorException;
+import com.sqli.maze.visitors.rooms.RoomsVisitor;
 
 public final class Room
 {
@@ -28,7 +29,7 @@ public final class Room
     adjacentDoors.add(door);
   }
   
-  boolean walkTo(final Room to)
+  boolean walkTo(final Room to, final RoomsVisitor roomsVisitor)
   {
     final Optional<Door> targetAdjacentDoor = adjacentDoors.stream()
         .filter(door -> door.walkTo(this, to))
@@ -40,6 +41,8 @@ public final class Room
       {
         throw new ClosedDoorException();
       }
+      
+      roomsVisitor.walkTo(targetAdjacentDoor.get(), to);
       
       return true;
     }
