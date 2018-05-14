@@ -1,9 +1,11 @@
 package com.sqli.maze;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import com.sqli.maze.exceptions.IllegalMoveException;
 import com.sqli.maze.parsers.DefaultMazeParser;
 import com.sqli.maze.parsers.MazeParser;
 
@@ -35,6 +37,7 @@ final class Maze
   
   void walkTo(final String to)
   {
-    currentRoom = rooms.get(to);
+    currentRoom = Optional.ofNullable(rooms.get(to))
+        .orElseThrow(IllegalMoveException::new);
   }
 }
