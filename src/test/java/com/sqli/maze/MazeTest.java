@@ -58,4 +58,17 @@ public class MazeTest
     assertEquals("G", mz.at());
   }
 
+  @Test
+  public void allow_Back_And_Forth()
+  {
+    Maze mz = new Maze("A$B", "A$C", "C|E", "B$D", "B|E", "E$F", "D$F", "F|G");
+    mz.popIn("A");
+    mz.walkTo("C");
+    assertEquals("C", mz.at());
+    mz.walkTo("A");
+    mz.walkTo("B");
+    mz.walkTo("D");
+    assertEquals("D", mz.at());
+  }
+
 }
