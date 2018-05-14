@@ -71,4 +71,18 @@ public class MazeTest
     assertEquals("D", mz.at());
   }
 
+  @Test
+  public void allow_Walker_To_Close_Passed_Door()
+  {
+    Maze mz = new Maze("A$B", "A$C", "C|E", "B$D", "B|E", "E$F", "D$F", "F|G");
+    mz.popIn("A");
+    mz.walkTo("B");
+    mz.walkTo("D");
+    mz.walkTo("F");
+    assertEquals("F", mz.at());
+    mz.closeLastDoor();
+    mz.walkTo("G");
+    assertEquals("G", mz.at());
+  }
+
 }

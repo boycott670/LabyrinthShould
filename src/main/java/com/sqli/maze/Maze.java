@@ -15,6 +15,7 @@ final class Maze
   private final Map<String, Room> rooms;
   
   private Room currentRoom;
+  private Room previousRoom;
   
   Maze(final String... maze)
   {
@@ -37,8 +38,15 @@ final class Maze
   
   void walkTo(final String to)
   {
+    previousRoom = currentRoom;
+    
     currentRoom = Optional.ofNullable(rooms.get(to))
         .filter(currentRoom::walkTo)
         .orElseThrow(IllegalMoveException::new);
+  }
+  
+  void closeLastDoor()
+  {
+    currentRoom.closeLastDoor(previousRoom);
   }
 }

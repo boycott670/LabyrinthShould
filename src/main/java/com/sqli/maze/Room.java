@@ -32,6 +32,11 @@ public final class Room
         .findFirst()
         .isPresent();
   }
+  
+  void closeLastDoor(final Room to)
+  {
+    adjacentDoors.stream().forEach(door -> door.closeLastDoor(this, to));
+  }
 
   @Override
   public boolean equals(Object other)
