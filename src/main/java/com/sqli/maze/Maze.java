@@ -38,6 +38,7 @@ final class Maze
   void walkTo(final String to)
   {
     currentRoom = Optional.ofNullable(rooms.get(to))
+        .filter(currentRoom::walkTo)
         .orElseThrow(IllegalMoveException::new);
   }
 }

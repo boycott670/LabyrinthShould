@@ -29,4 +29,13 @@ public class MazeTest
     mz.walkTo("B");
     mz.walkTo("E"); // rooms E does not exist in the mz
   }
+
+  @Test(expected = IllegalMoveException.class)
+  public void refuse_Move_Without_Path()
+  {
+    Maze mz = new Maze("A$B", "A$C", "B$D");
+    mz.popIn("A");
+    mz.walkTo("B");
+    mz.walkTo("C"); // Can not reach C from B
+  }
 }
